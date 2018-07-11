@@ -1,0 +1,8 @@
+type: s
+
+shadowsocks:
+  address: 127.0.0.1:8001
+manager:
+  address: 0.0.0.0:8002
+  password: '123456'
+db: '/etc/ssmgr/db/ss.sqlite'

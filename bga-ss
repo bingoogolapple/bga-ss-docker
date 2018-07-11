@@ -1,0 +1,5 @@
+#!/bin/bash
+
+ssserver -m aes-256-cfb -p 8000 -k 123456 --manager-address 127.0.0.1:8001 -d start
+screen -dmS ssmgr ssmgr -c /etc/ssmgr/ss.yml
+ssmgr -c /etc/ssmgr/webgui.yml
