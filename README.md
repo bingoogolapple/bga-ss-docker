@@ -7,16 +7,16 @@
 
 ## 第一次运行时的执行步骤
 
-> 拉取镜像
+> 基于 redis:5.0.3-alpine 镜像创建并启动名叫 bga-ss-redis 的容器，容器名称必须叫 bga-ss-redis
 
 ```
-docker pull bingoogolapple/bga-ss:v3
+docker run --name bga-ss-redis -d redis:5.0.3-alpine
 ```
 
-> 基于 bga-ss bingoogolapple/bga-ss:v3 镜像创建并启动名叫 bga-ss 的容器
+> 基于 bingoogolapple/bga-ss:v5 镜像创建并启动名叫 bga-ss 的容器，并连接到 bga-ss-redis
 
 ```
-docker run -d -p 8003:8003 -p 6660-6680:6660-6680 --name bga-ss bingoogolapple/bga-ss:v3
+docker run -d -p 8003:8003 -p 6660-6680:6660-6680 --link bga-ss-redis --name bga-ss bingoogolapple/bga-ss:v5
 ```
 
 ## 容器停止了重新运行时的执行步骤

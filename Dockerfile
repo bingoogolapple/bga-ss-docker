@@ -1,21 +1,24 @@
-FROM centos:7.2.1511
+FROM node:10.15.1-alpine 
 LABEL maintainer="bingoogolapple@gmail.com"
 
-RUN yum -y update
-RUN yum -y install python-setuptools && easy_install pip
-RUN pip install shadowsocks
-
-RUN curl -sL https://rpm.nodesource.com/setup_6.x | bash -
-RUN yum -y install nodejs
-
-RUN npm i -g shadowsocks-manager@0.19.7
-
-RUN yum -y install screen
-
 COPY ssmgr /etc/ssmgr
-
 COPY bga-ss /usr/bin/
 
-RUN chmod +x /usr/bin/bga-ss
+RUN echo "https://mirrors.tuna.tsinghua.edu.cn/alpine/latest-stable/main" > /etc/apk/repositories \
+  && echo "https://mirrors.tuna.tsinghua.edu.cn/alpine/latest-stable/community" >> /etc/apk/repositories \
+  && apk -U --no-cache --allow-untrusted add bash screen py-pip \
+  && pip install --upgrade pip \
+  && pip install shadowsocks==2.8.2 \
+  && npm i -g shadowsocks-manager@0.30.17 --unsafe-perm \
+  && chmod +x /usr/bin/bga-ss
 
 CMD [ "bga-ss" ]
+
+# docker stop bga-ss-redis && docker rm bga-ss-redis
+# docker run --name bga-ss-redis -d redis:5.0.3-alpine
+
+# docker stop bga-ss && docker rm bga-ss && docker rmi bingoogolapple/bga-ss:v5
+# docker build -t bingoogolapple/bga-ss:v5 .
+# docker login
+# docker push bingoogolapple/bga-ss:v5
+# docker run -d -p 8003:8003 -p 6660-6680:6660-6680 --link bga-ss-redis --name bga-ss bingoogolapple/bga-ss:v5

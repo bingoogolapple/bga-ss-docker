@@ -1,0 +1,17 @@
+FROM node:10.15.1-alpine 
+LABEL maintainer="bingoogolapple@gmail.com"
+
+RUN echo "https://mirrors.tuna.tsinghua.edu.cn/alpine/latest-stable/main" > /etc/apk/repositories \
+  && echo "https://mirrors.tuna.tsinghua.edu.cn/alpine/latest-stable/community" >> /etc/apk/repositories \
+  && apk -U --no-cache --allow-untrusted add bash screen py-pip \
+  && pip install --upgrade pip \
+  && pip install shadowsocks==2.8.2
+
+CMD exec ssserver -m aes-256-cfb -p 8888 -k $SS_PWD
+
+# docker stop bga-ss && docker rm bga-ss && docker rmi bingoogolapple/bga-ss:v4
+# echo "" > Dockerfile-ss && vi Dockerfile-ss
+# docker build --file Dockerfile-ss -t bingoogolapple/bga-ss:v4 .
+# docker run -d -p 端口:8888 -e SS_PWD=密码 --name bga-ss bingoogolapple/bga-ss:v4
+# docker login
+# docker push bingoogolapple/bga-ss:v4
